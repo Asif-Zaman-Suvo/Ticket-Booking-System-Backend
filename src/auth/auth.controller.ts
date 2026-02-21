@@ -1,21 +1,13 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { AuthService } from './auth.service.js';
-import { RegisterDto } from './dto/register.dto.js';
+import { All, Controller, Req, Res } from '@nestjs/common';
+import type { Request, Response } from 'express';
+import { auth } from './auth.js';
+import { toNodeHandler } from 'better-auth/node';
 
-interface RegisterResponse {
-  id: string;
-  fullName: string;
-  email: string;
-  phone: string | null;
-  createdAt: Date;
-}
-
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
-
-  @Post('register')
-  async register(@Body() dto: RegisterDto): Promise<RegisterResponse> {
-    return this.authService.register(dto);
+  @All('/*path')
+  betterAuthHandler(@Req() req: Request, @Res() res: Response) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+    return toNodeHandler(auth)(req, res);
   }
 }
