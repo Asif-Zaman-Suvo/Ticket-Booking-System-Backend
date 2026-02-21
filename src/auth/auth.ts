@@ -15,7 +15,7 @@ export const auth = betterAuth({
         type: 'string',
         required: false,
       },
-    }
+    },
   },
   trustedOrigins: ['http://localhost:3000'],
   baseURL: 'http://localhost:8000',
